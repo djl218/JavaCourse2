@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.ArrayList;
 
 public class Program {
 
@@ -17,42 +16,24 @@ public class Program {
     }
     
     public static void printKeys(HashMap<String, String> hashmap) {
-        ArrayList<String> keys = new ArrayList<>();
-        
         for (String key : hashmap.keySet()) {
-            keys.add(key);
-        }
-        
-        for (String key : keys) {
-            System.out.println(key);
+            System.out.println(key);;
         }
     }
     
     public static void printKeysWhere(HashMap<String, String> hashmap, String text) {
-        ArrayList<String> keys = new ArrayList<>();
-        
         for (String key : hashmap.keySet()) {
             if (key.contains(text)) {
-                keys.add(key);
+                System.out.println(key);
             }
-        }
-        
-        for (String key : keys) {
-            System.out.println(key);
         }
     }
     
     public static void printValuesOfKeysWhere(HashMap<String, String> hashmap, String text) {
-        ArrayList<String> keys = new ArrayList<>();
-        
         for (String key : hashmap.keySet()) {
             if (key.contains(text)) {
-                keys.add(key);
+                System.out.println(hashmap.get(key));
             }
-        }
-        
-        for (String key : keys) {
-            System.out.println(hashmap.get(key));
         }
     }
 
