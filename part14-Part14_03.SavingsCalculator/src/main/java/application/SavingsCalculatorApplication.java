@@ -15,12 +15,7 @@ import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
 public class SavingsCalculatorApplication extends Application {
-    private boolean running;
-    
-    public SavingsCalculatorApplication() {
-        this.running = true;
-    }
-    
+
     @Override
     public void start(Stage stage) {
         BorderPane layout = new BorderPane();
@@ -29,14 +24,14 @@ public class SavingsCalculatorApplication extends Application {
         NumberAxis yAxis = new NumberAxis();
         
         LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle("Savings Calculator");
+        lineChart.setTitle("Savings calculator");
         
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(40));
         vbox.setSpacing(40);
         
         BorderPane topBorderPane = new BorderPane();
-        Label monthlySavings = new Label("Monthly Savings");
+        Label monthlySavings = new Label("Monthly savings");
         Slider topSlider = new Slider(25, 250, 25);
         topSlider.setShowTickMarks(true);
         topSlider.setShowTickLabels(true);
@@ -56,7 +51,7 @@ public class SavingsCalculatorApplication extends Application {
         topBorderPane.setRight(topSliderReading);
                 
         BorderPane bottomBorderPane = new BorderPane();
-        Label yearlyInterestRate = new Label("Yearly Interest Rate");
+        Label yearlyInterestRate = new Label("Yearly interest rate");
         Slider bottomSlider = new Slider(0, 10, 0);
         bottomSlider.setShowTickLabels(true);
         bottomSlider.setBlockIncrement(1);
@@ -83,21 +78,51 @@ public class SavingsCalculatorApplication extends Application {
             savings.getData().add(data);
         }
         lineChart.getData().add(savings);
-        /*for (int i = 0; i < 31; i++) {
-            savings.getData().add(new XYChart.Data(i, Double.valueOf(topSliderReading.getText()) * 12.0 * i));
-        }*/
-        for (int i = 0; i < 31; i++) {
-            savings.getData().get(i).setYValue((Number)(Double.valueOf(topSliderReading.getText()) * 12 * i));
-        }
-        /*for (XYChart.Data data : (XYChart.Series(savings.getData())) {
-            data.setYValue(Double.valueOf(data.getXValue()) * 12.0 * Double.valueOf(topSliderReading.getText()));
-        }*/
-
+        topSlider.valueProperty().addListener(
+            new ChangeListener<Number>() {
+                public void changed(ObservableValue <? extends Number >
+                    observable, Number oldValue, Number newValue)
+                {
+                    savings.getData().clear();
+                    for (int i = 0; i < 31; i++) {
+                        XYChart.Data<Number, Number> data = new XYChart.Data(i, Double.valueOf(topSliderReading.getText()) * 12.0 * i);
+                        savings.getData().add(data);
+                    }
+                }    
+            });
         
+        XYChart.Series interest = new XYChart.Series();
+        interest.setName("Interest");
+        XYChart.Data<Number, Number> data = new XYChart.Data(0, 0);
+        interest.getData().add(data);
+        double prev = 0;
+        for (int i = 1; i < 31; i++) {
+            XYChart.Data<Number, Number> dataLoop = new XYChart.Data(i, (Double.valueOf(bottomSliderReading.getText()) / 100 + 1) * prev + (Double.valueOf(topSliderReading.getText()) * 12.0 + (Double.valueOf(topSliderReading.getText()) * 12.0 / (100 / Double.valueOf(bottomSliderReading.getText())))));
+            prev = (Double.valueOf(bottomSliderReading.getText()) / 100 + 1) * prev + (Double.valueOf(topSliderReading.getText()) * 12.0 + (Double.valueOf(topSliderReading.getText()) * 12.0 / (100 / Double.valueOf(bottomSliderReading.getText()))));
+            interest.getData().add(dataLoop);
+        }
+        lineChart.getData().add(interest);
+        bottomSlider.valueProperty().addListener(
+            new ChangeListener<Number>() {
+                public void changed(ObservableValue <? extends Number >
+                    observable, Number oldValue, Number newValue)
+                {
+                    double prev = 0;
+                    interest.getData().clear();
+                    XYChart.Data<Number, Number> data = new XYChart.Data(0, 0);
+                    interest.getData().add(data);
+                    for (int i = 1; i < 31; i++) {
+                        XYChart.Data<Number, Number> dataLoop = new XYChart.Data(i, (Double.valueOf(bottomSliderReading.getText()) / 100 + 1) * prev + (Double.valueOf(topSliderReading.getText()) * 12.0 + (Double.valueOf(topSliderReading.getText()) * 12.0 / (100 / Double.valueOf(bottomSliderReading.getText())))));
+                        prev = (Double.valueOf(bottomSliderReading.getText()) / 100 + 1) * prev + (Double.valueOf(topSliderReading.getText()) * 12.0 + (Double.valueOf(topSliderReading.getText()) * 12.0 / (100 / Double.valueOf(bottomSliderReading.getText()))));
+                        interest.getData().add(dataLoop);
+                    }
+                }    
+            });
+
         layout.setCenter(lineChart);
         layout.setTop(vbox);
         
-        Scene view = new Scene(layout, 640, 480);
+        Scene view = new Scene(layout, 320, 300);
         stage.setScene(view);
         stage.show();
     }
