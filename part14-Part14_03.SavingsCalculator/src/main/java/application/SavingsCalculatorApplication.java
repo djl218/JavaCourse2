@@ -45,7 +45,8 @@ public class SavingsCalculatorApplication extends Application {
                 {
                     topSliderReading.setText(String.valueOf(newValue.intValue()));
                 }
-            });
+            }
+        );
         topBorderPane.setLeft(monthlySavings);
         topBorderPane.setCenter(topSlider);
         topBorderPane.setRight(topSliderReading);
@@ -63,7 +64,8 @@ public class SavingsCalculatorApplication extends Application {
                 {
                     bottomSliderReading.setText(String.valueOf(newValue.intValue()));
                 }
-            });
+            }
+        );
         bottomBorderPane.setLeft(yearlyInterestRate);
         bottomBorderPane.setCenter(bottomSlider);
         bottomBorderPane.setRight(bottomSliderReading);
@@ -89,7 +91,8 @@ public class SavingsCalculatorApplication extends Application {
                         savings.getData().add(data);
                     }
                 }    
-            });
+            }
+        );
         
         XYChart.Series interest = new XYChart.Series();
         interest.setName("Interest");
@@ -117,7 +120,8 @@ public class SavingsCalculatorApplication extends Application {
                         interest.getData().add(dataLoop);
                     }
                 }    
-            });
+            }
+        );
 
         layout.setCenter(lineChart);
         layout.setTop(vbox);
