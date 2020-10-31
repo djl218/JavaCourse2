@@ -41,7 +41,7 @@ public class SavingsCalculatorApplication extends Application {
         topSlider.valueProperty().addListener(
             new ChangeListener<Number>() {
                 public void changed(ObservableValue <? extends Number >
-                        observable, Number oldValue, Number newValue)
+                    observable, Number oldValue, Number newValue)
                 {
                     topSliderReading.setText(String.valueOf(newValue.intValue()));
                 }
